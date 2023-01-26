@@ -58,8 +58,8 @@ def preAuton():
     Currenttime = 0
     Drivemultiplier = 1
     Turnspeed = -0.5
-    fwd = 0
-    trn = 0
+    Fwd = 0
+    Trn = 0
 
     # Set pnuematics
     expansion.set(True)
