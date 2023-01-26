@@ -193,7 +193,7 @@ def userControl():
                 right_drive.spin(FORWARD)
 
 
-            Trn = Trn ** 2 / 100 * Turnspeed
+            Trn = (100 - (Trn ** 2 / 100)) * Turnspeed # Change back
 
         else:
 
@@ -216,7 +216,7 @@ def userControl():
                 right_drive.spin(FORWARD)
 
             
-            Fwd = Fwd ** 2 / 100 * Drivemultiplier
+            Fwd = (100 - (Fwd ** 2 / 100)) * Drivemultiplier # Change back
 
         else:
 
