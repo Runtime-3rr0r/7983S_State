@@ -33,6 +33,7 @@ left1 = Motor(Ports.PORT1, GearSetting.RATIO_36_1)
 left2 = Motor(Ports.PORT2, GearSetting.RATIO_36_1, True)
 left3 = Motor(Ports.PORT3, GearSetting.RATIO_36_1)
 left_drive = MotorGroup(left1, left2, left3)
+
 right1 = Motor(Ports.PORT4, GearSetting.RATIO_36_1)
 right2 = Motor(Ports.PORT5, GearSetting.RATIO_36_1, True)
 right3 = Motor(Ports.PORT6, GearSetting.RATIO_36_1)
@@ -48,7 +49,6 @@ def preAuton():
     global Lastpress
     global Currenttime
     global Drivemultiplier
-    global Turnspeed
     global Fwd
     global Trn
 
@@ -57,7 +57,6 @@ def preAuton():
     Lastpress = 0
     Currenttime = 0
     Drivemultiplier = 1
-    Turnspeed = -1
     Fwd = 0
     Trn = 0
 
@@ -65,14 +64,14 @@ def preAuton():
     expansion.set(True)
 
     # Electronics setup
-    left_drive.set_velocity(100, PERCENT)
-    right_drive.set_velocity(100, PERCENT)
-    intake.set_velocity(100, PERCENT)
-    catapult.set_velocity(100, PERCENT)
-    catapult_side.set_light_power(100)
     intake_side.set_light_power(100)
     catapult.set_timeout(2, SECONDS)
+    intake.set_velocity(100, PERCENT)
+    catapult_side.set_light_power(100)
+    catapult.set_velocity(100, PERCENT)
     catapult.set_max_torque(100, PERCENT)
+    left_drive.set_velocity(100, PERCENT)
+    right_drive.set_velocity(100, PERCENT)
 
     # Display setup
     controller.screen.clear_screen()
@@ -105,7 +104,6 @@ def userControl():
     global Lastpress
     global Currenttime
     global Drivemultiplier
-    global Turnspeed
     global Fwd
     global Trn
 
