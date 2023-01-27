@@ -57,7 +57,7 @@ def preAuton():
     Lastpress = 0
     Currenttime = 0
     Drivemultiplier = 1
-    Turnspeed = -0.5
+    Turnspeed = -1
     Fwd = 0
     Trn = 0
 
@@ -129,7 +129,6 @@ def userControl():
             intake_side.set_light(LedStateType.ON)
             controller.screen.set_cursor(1, 1)
             controller.screen.print("INTAKE MODE")
-            Turnspeed = -0.5
 
         else:
             
@@ -138,7 +137,6 @@ def userControl():
             intake_side.set_light(LedStateType.OFF)
             controller.screen.set_cursor(1, 1)
             controller.screen.print("LAUNCH MODE")
-            Turnspeed = -0.25
 
 
         # Expansion
@@ -177,46 +175,32 @@ def userControl():
             catapult.stop()
 
         
-        # Turning control with parabolic drive and deadzone
+        # Turning control with deadzone
         if abs(controller.axis1.position()) > 1:
             
-            Trn = controller.axis1.position()
-
-            if Trn < 0:
-
-                left_drive.spin(REVERSE)
-                right_drive.spin(REVERSE)
-
-            else:
-
-                left_drive.spin(FORWARD)
-                right_drive.spin(FORWARD)
-
-
-            Trn = (100 - (Trn ** 2 / 100)) * Turnspeed # Change back
-
+            axs1 = controller.axis1.position()
+            
+            Trn = (axs1 ** 2) / 100 * -1
+            
+            if axs1 < 0:
+                Trn *= -1
+                        
         else:
 
             Trn = 0
 
 
-        # Forward control with parabolic drive and deadzone
-        if abs(controller.axis3.position()) > 5:
+        # Forward control with deadzone
+        if abs(controller.axis3.position()) > 1:
 
-            Fwd = controller.axis3.position()
+            axs3 = controller.axis3.position()
 
-            if Fwd < 0:
+            Fwd = (axs3 ** 2) / 100
 
-                left_drive.spin(REVERSE)
-                right_drive.spin(REVERSE)
+            if axs3 < 0:
+                Fwd *= -1
 
-            else:
-
-                left_drive.spin(FORWARD)
-                right_drive.spin(FORWARD)
-
-            
-            Fwd = (100 - (Fwd ** 2 / 100)) * Drivemultiplier # Change back
+            Fwd *= Drivemultiplier
 
         else:
 
@@ -226,6 +210,9 @@ def userControl():
         # Set motor speeds
         left_drive.set_velocity(Trn + Fwd, PERCENT)
         right_drive.set_velocity(Trn - Fwd, PERCENT)
+
+        left_drive.spin(FORWARD)
+        right_drive.spin(FORWARD)
 
         # wait and add time to timer
         Currenttime += 20
